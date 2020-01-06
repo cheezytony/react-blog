@@ -220,7 +220,8 @@ const actions = {
 		};
 	},
 	LOGIN(state, action) {
-		const token = action.user.appToken;
+		const token = action.token;
+		console.log(action);
 
 		localStorage.setItem('eblog-app-token', token);
 

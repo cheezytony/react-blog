@@ -35,7 +35,7 @@ class App extends React.Component {
 		})
 		.then(response => {
 			if (response && response.data && response.data.success) {
-				this.state.login(response.data.user);
+				this.state.login(response.data.user, response.data.token);
 			}
 		})
 		.catch(error => {
@@ -81,7 +81,7 @@ export default connect(
 		return {
 			activateStore: () => dispatch({ type: 'READY' }),
 			deactivateStore: () => dispatch({ type: 'NOT_READY' }),
-			login: user => dispatch({ type: 'LOGIN', user })
+			login: (user, token) => dispatch({ type: 'LOGIN', user, token })
 		}
 	}
 )(App);

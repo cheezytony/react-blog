@@ -54,7 +54,8 @@ class Login extends React.Component {
 				return 
 			}
 			const user = response.data.user;
-			this.saveUser(user);
+			const token = response.data.token;
+			this.saveUser(user, token);
 			this.setState({
 				loggedIn: true
 			})
@@ -133,7 +134,7 @@ export default connect(
 	state => ({}),
 	dispatch => {
 		return {
-			saveUser: ( user ) => dispatch({ type: 'LOGIN', user })
+			saveUser: ( user, token ) => dispatch({ type: 'LOGIN', user, token })
 		}
 	}
 )(Login);
