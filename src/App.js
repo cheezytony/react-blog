@@ -1,26 +1,87 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import routes from './routes';
+import AppLoader from './components/AppLoader';
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			ready: props.ready,
+			activateStore: props.activateStore,
+			deactivateStore: props.deactivateStore,
+			login: props.login,
+			error: null
+		};
+
+	}
+
+	async loadUserSession() {
+
+		const appToken = localStorage.getItem('eblog-app-token');
+
+		if (!appToken) {
+			return this.state.activateStore();
+		}
+
+		await axios({
+			url: 'http://localhost:1337/api/session',
+			method: 'POST',
+			data: {
+				appToken
+			}
+		})
+		.then(response => {
+			if (response && response.data && response.data.success) {
+				this.state.login(response.data.user);
+			}
+		})
+		.catch(error => {
+			this.setState({
+				error
+			});
+		});
+		this.state.activateStore();
+	}
+
+	componentDidMount() {
+		this.loadUserSession();
+	}
+
+	componentDidUpdate() {
+		if (this.state.ready !== this.props.ready) {
+			this.setState({
+				ready: this.props.ready
+			});
+		}
+	}
+
+	render() {
+		if (!this.state.ready) {
+			return <AppLoader />
+		}else {
+			return (
+				<Switch>
+					{ routes.main.map((route, i) => 
+						<Route { ...route } key={ i } />
+					) }
+				</Switch>
+			);
+		}
+	}
 }
 
-export default App;
+export default connect(
+	state => {
+		return { ready: state.ready }
+	},
+	dispatch => {
+		return {
+			activateStore: () => dispatch({ type: 'READY' }),
+			deactivateStore: () => dispatch({ type: 'NOT_READY' }),
+			login: user => dispatch({ type: 'LOGIN', user })
+		}
+	}
+)(App);
