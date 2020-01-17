@@ -15,7 +15,8 @@ class formElement extends React.Component {
 		this.state = {
 			model,
 			state,
-			value
+			value,
+			files: []
 		}
 	}
 
@@ -37,6 +38,15 @@ class formElement extends React.Component {
 			value = event.target.checked;
 		}else {
 			value = event.target.value;
+		}
+
+		if (event.target.matches('input[type="file"]')) {
+			const files = [...event.target.files];
+			this.setState({
+				files: files
+			});
+			console.log(this);
+			this.forceUpdate();
 		}
 
 	    parent.setState({
@@ -83,8 +93,65 @@ class File extends formElement {
 	}
 }
 
+class Dropzone extends formElement {
+
+	renderFiles() {
+		return (
+			<div className="dropzone-files">
+				{ this.state.files.map( (file, i) => this.renderFile(file, i) ) }
+			</div>
+		);
+	}
+
+	renderFile(file, i) {
+		return (
+			<div className="dropzone-file" key={ i } >
+				<div className="dropzone-file-icon ion-md-document"></div>
+				<div className="dropzone-file-details">
+					<div className="dropzone-file-name">{ file.name }</div>
+					<div className="dropzone-file-size">{ file.size } bytes</div>
+					<div className="dropzone-file-type">{ file.type }</div>
+				</div>
+			</div>		
+		);
+	}
+
+	fileOrPreview() {
+		if (this.state.files?.length) {
+			return (
+				<div className="dropzone-files">
+					{ this.renderFiles() }
+				</div>
+			);
+		}
+
+		return (
+			<div className="dropzone-preview">
+				<div className="dropzone-preview-icon ion-md-document"></div>
+				<div className="dropzone-preview-text">
+					{ this.props.placeholder || 'Select a file to upload' }
+				</div>
+			</div>
+		);
+	}
+
+	render() {
+		return (
+			<div className="dropzone">
+				<input
+					type="file"
+					className="dropzone-input"
+					onChange={(event) => this.handleInputChange(event, this.state.model, this.state.state)}
+					{ ...this.props } />
+				{ this.fileOrPreview() }
+			</div>
+		);
+	}
+}
+
 export {
 	Input,
 	Textarea,
-	File
+	File,
+	Dropzone
 }

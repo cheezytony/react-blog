@@ -47,21 +47,27 @@ class Login extends React.Component {
 			}
 		})
 		.then((response) => {
+			console.log('1');
 			this.loading(false);
+			console.log('2');
 
 			if (!response.data.success) {
+				console.log('-1');
 				// Trigger Error
 				return 
 			}
 			const user = response.data.user;
 			const token = response.data.token;
 			this.saveUser(user, token);
+			console.log('3');
 			this.setState({
 				loggedIn: true
 			})
+			console.log('5');
 
 		})
 		.catch((error) => {
+			console.log(error);
 			this.loading(false);
 
 			if (error.response) {

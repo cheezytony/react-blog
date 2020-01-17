@@ -50,6 +50,18 @@ function postIsCommentedByMe(state, props) {
 *--------------------------------------------
 ********************************************************************************************/
 
+function renderPostFeaturedImage(state) {
+	if (!state.post.featuredImage) {
+		return null;
+	}
+
+	return (
+		<div className="blog-post-featured-image">
+			<img src={ `http://localhost:1337/post/${state.post.id}/image` } alt={ state.post.title }/>
+		</div>
+	);
+}
+
 function renderPostTags(state) {
 	return (
 		<div className="blog-post-tags">
@@ -135,7 +147,9 @@ function BlogItem (props) {
 	}
 
 	return (
-		<div className={`blog-post ${ props.preview ? 'blog-post-preview' : '' }`}>
+		<div className={`blog-post ${ props.list ? 'blog-post-item' : props.preview ? 'blog-post-preview' : '' }`}>
+
+			{ renderPostFeaturedImage(state) }
 
 			{ renderPostTags(state) }
 

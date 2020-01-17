@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import BlogItem from './Item';
-import { Input, Textarea, File } from '../../components/form';
+import { Input, Textarea, Dropzone } from '../../components/form';
 import axios from 'axios';
 
 class NewPost extends React.Component {
@@ -81,7 +81,6 @@ class NewPost extends React.Component {
 		if (!tag) return;
 
 		this.addTag(tag);
-		console.log('done');
 	}
 
 	/********************************************************************************************
@@ -131,13 +130,15 @@ class NewPost extends React.Component {
 	async submitForm(event) {
 		event.preventDefault();
 
-		const data = new FormData();
+		const formdata = new FormData();
 
-		data.append('featuredImage', this.state.featuredImage);
-		data.append('title', this.state.title);
-		data.append('body', this.state.body);
-		data.append('tags', this.state.tags);
-		data.append('user', this.state.user.id);
+		formdata.append('title', this.state.title);
+		formdata.append('body', this.state.body);
+		formdata.append('tags', JSON.stringify(this.state.tags));
+		formdata.append('user', this.state.user.id);
+		formdata.append('featuredImage', this.state.featuredImage);
+
+		var data = formdata;
 
 		this.loading(true);
 
@@ -146,13 +147,19 @@ class NewPost extends React.Component {
 			method: 'POST',
 			data,
 			headers: {
-				'Content-Type': 'application/json',
+				// 'Content-Type': 'application/json',
+	            'Content-Type': 'multipart/form-data; boundary=----',
 			}
 		})
 		.then(response => {
 			this.setState({
 				success: true,
-				savedPost: response.data.post
+				savedPost: response.data.post,
+				title: '',
+				body: '',
+				tags: [],
+				tag: '',
+				featuredImage: null,
 			})
 		})
 		.catch(error => {
@@ -216,12 +223,12 @@ class NewPost extends React.Component {
 						<label htmlFor="post-image" className="form-label">
 							Select an amazing feature image to grab readers' attentions
 						</label>
-						<File
-							className="form-control"
+						<Dropzone
 							id="post-image"
 							model="featuredImage"
 							state={ this.state }
-							placeholder="Enter post image" />
+							accept=".jpg, .png, .gif, .svg"
+							placeholder="Select Featured Image" />
 					</div>
 
 					<div className="form-group">

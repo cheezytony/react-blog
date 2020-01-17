@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import routes from './routes';
 import AppLoader from './components/AppLoader';
 import axios from 'axios';
+import cookie from "./helpers/cookies";
 
 class App extends React.Component {
 	constructor(props) {
@@ -20,7 +21,8 @@ class App extends React.Component {
 
 	async loadUserSession() {
 
-		const appToken = localStorage.getItem('eblog-app-token');
+		// const appToken = localStorage.getItem('eblog-app-token');
+		const appToken = cookie.get('eblog-app-token');
 
 		if (!appToken) {
 			return this.state.activateStore();

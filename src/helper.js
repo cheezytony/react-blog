@@ -112,7 +112,7 @@ function dateFormat(date, format) {
 };
 
 
-$('body').on('focus blur', '.form-group .form-control', function(event) {
+$('body').on('focus blur', '.form-group .form-control, .form-group .dropzone-input', function(event) {
 	const group = $(this).closest('.form-group');
 	if (event.type === 'focusin') {
 		group.addClass('focused');
