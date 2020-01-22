@@ -4,6 +4,13 @@ import cookie from "./helpers/cookies";
 const initialState = {
 	/*
 	------------------------------------------------------
+	| Theme
+	------------------------------------------------------
+	*/
+	primaryColor: '#fc3545',
+
+	/*
+	------------------------------------------------------
 	| POSTS
 	------------------------------------------------------
 	*/
@@ -23,8 +30,9 @@ const initialState = {
 	| CONFIG
 	------------------------------------------------------
 	*/
+	// cookies || local-storage
 	location: 'cookies',
-	session_timeout: 60 * 10,
+	session_timeout: '10min',
 
 	/*
 	------------------------------------------------------
@@ -56,7 +64,7 @@ const actions = {
 				break;
 			case 'cookies':
 			default:
-				cookie.set('eblog-app-token', token);
+				cookie.set('eblog-app-token', token, state.session_timeout);
 				break;
 		}
 

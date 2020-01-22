@@ -14,6 +14,11 @@ const routes = {
 			exact: true,
 			component: require('./modules/blog/List.js').default
 		},
+		{
+			path: '*',
+			exact: true,
+			component: require('./modules/errors/404.js').default
+		},
 	],
 	main: [
 		{
@@ -23,6 +28,10 @@ const routes = {
 		{
 			path: '/login',
 			component: require('./modules/auth/Login.js').default
+		},
+		{
+			path: '/register',
+			component: require('./modules/auth/Register.js').default
 		},
 		{
 			path: '/',

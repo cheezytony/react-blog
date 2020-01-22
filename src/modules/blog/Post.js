@@ -90,6 +90,8 @@ class BlogPost extends React.Component {
 
 	listen() {
 		$(window).click((event) => {
+			if (!this.shouldRender) return false;
+
 			if (event.target.matches('.blog-post-comments-form, .blog-post-comments-form *') && !event.target.matches('a, button')) {
 				if (this.commentInput && this.commentInput.current) {
 					this.commentInput.current.focus();
@@ -102,6 +104,8 @@ class BlogPost extends React.Component {
 		});
 
 		$('body').on('focus', '*', (event) => {
+			if (!this.shouldRender) return false;
+
 			if (!event.target.matches('.blog-post-comments-form, .blog-post-comments-form *')) {
 				if (this.state.shouldRender) {
 					this.setState({
@@ -244,7 +248,7 @@ class BlogPost extends React.Component {
 		const renderedTime = (new Date(comment.createdAt)).format('h:ia');
 
 		return (
-			<div className={`blog-post-comment${ comment.isNew ? ' new' : '' }`} key={ i }>
+			<div className={`blog-post-comment${ comment.isNew ? ' new' : '' }`} id={`comment-${comment.id}`} key={ i }>
 				<div className="blog-post-comment-author">
 					Comment by <Link to="/" className="blog-post-comment-author-name">{ comment.author }</Link>
 				</div>
@@ -343,25 +347,28 @@ class BlogPost extends React.Component {
 		const post = this.state.post;
 		var map = [];
 		// Push Post Title
-		map.push({ type: 'title', title: post.title, className: 'blog-post-mini-map-title' });
+		map.push({ id: post.id, type: 'title', title: post.title, className: 'blog-post-mini-map-title' });
 		// Push Post Body
-		map.push({ type: 'body', title: post.body, className: 'blog-post-mini-map-body' });
+		map.push({ id: post.id, type: 'body', title: post.body, className: 'blog-post-mini-map-body' });
 
 		post.comments.forEach( comment => {
-			map.push({ type: 'comment', title: comment.text, className: 'blog-post-mini-map-comment', isNew: comment.isNew });
+			map.push({ id: comment.id, type: 'comment', title: comment.text, className: 'blog-post-mini-map-comment', isNew: comment.isNew });
 		} );
 
 		return (
 			<div className="blog-post-mini-map">
 				{ map.map( (item, i) =>
-					<div className={`blog-post-mini-map-item ${ item.className } ${ item.isNew ? 'new' : '' }`} key={ i }>
+					<a
+						href={`#${item.type}-${item.id}`}
+						className={`blog-post-mini-map-item ${ item.className } ${ item.isNew ? 'new' : '' }`}
+						key={ i }>
 						<div className="blog-post-mini-map-item-type">
 							{ item.type }
 						</div>
 						<div className="blog-post-mini-map-item-title">
 							{ item.title?.truncate(35) }
 						</div>
-					</div>
+					</a>
 				) }
 			</div>
 		);

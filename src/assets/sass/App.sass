@@ -1,25 +1,46 @@
-$purple: #6D85FF
-$primary: $purple
-$font-family-base: 'Poppins'
-$font-weight-base: 100
-$input-btn-font-size: .85rem
-$input-btn-font-weight: 600
-$input-btn-padding-x: 1.4rem
-$input-btn-padding-y: .5rem
-$navbar-height: 60px
-$btn-font-size-xl: 1.2rem
-$btn-padding-y-xl: 1.6rem
-$btn-padding-x-xl: 6rem
+$red:																	#fc3545
+$purple:																#6D85FF
+$primary:																$red
+$font-family-base:														'Poppins'
+$font-size-base:														.8rem
+$font-weight-base:														300
+
+$heading-font-family:													'Poppins'
+
+$input-btn-font-size:													.85rem
+$input-btn-font-weight:													400
+$input-btn-padding-x:													1.4rem
+$input-btn-padding-y:													.5rem
+
+$navbar-height:															60px
+$btn-font-weight:														$input-btn-font-weight
+$btn-font-size-xl:														1.2rem
+$btn-padding-y-xl:														1.6rem
+$btn-padding-x-xl:														6rem
 
 @import "~bootstrap/scss/bootstrap.scss"
 @import "~ionicons/dist/scss/ionicons.scss"
 @import "~animate.css/animate.min.css"
+@import _fonts
 
 @keyframes center-spin
 	from
 		transform: translate(-50%, -50%) rotate(0deg)
 	to
 		transform: translate(-50%, -50%) rotate(359deg)
+
+
+//
+// ----------------------------
+// Placeholders
+// ----------------------------
+//
+.heading
+	font-family: $heading-font-family
+	font-size: 2.5rem
+	font-weight: 700
+	line-height: 1.2
+
 
 .navbar
 	height: $navbar-height
@@ -61,6 +82,10 @@ $btn-padding-x-xl: 6rem
 			width: 40px
 
 .btn
+	font-weight: $btn-font-weight
+	&:focus
+		box-shadow: none
+		outline: none
 	&-xl
 		font-size: $btn-font-size-xl
 		padding: $btn-padding-y-xl $btn-padding-x-xl
@@ -101,11 +126,11 @@ $btn-padding-x-xl: 6rem
 		.form
 			&-label
 				font-size: .8rem
-				// font-weight: 100
+				font-weight: 400
 				opacity: .7
 			&-control
 				border: none
-				font-weight: 100
+				// font-weight: 100
 				padding-left: 0
 				padding-right: 0
 				&::placeholder
@@ -148,6 +173,7 @@ $btn-padding-x-xl: 6rem
 					border-left: 1px solid $light
 					padding-right: 0
 				&-title
+					@extend .heading
 					color: $body-color
 					display: inline-block
 					font-size: 2rem
@@ -268,10 +294,9 @@ $btn-padding-x-xl: 6rem
 				img
 					transform: scale(1)
 		&-title
+			@extend .heading
 			color: $body-color
 			display: inline-block
-			font-size: 3rem
-			font-weight: 700
 			margin-bottom: 1rem
 			transition: .5s
 			text-transform: capitalize
@@ -290,7 +315,7 @@ $btn-padding-x-xl: 6rem
 		&-author
 			color: rgba($body-color, .3)
 			font-size: .8rem
-			font-weight: 100
+			// font-weight: 100
 			margin-bottom: 2rem
 			&-name
 				color: rgba($body-color, .7)
@@ -310,6 +335,7 @@ $btn-padding-x-xl: 6rem
 		&-body
 			font-family: Poppins, cursive
 			font-weight: 100
+			font-size: 1rem
 			margin-bottom: 2rem
 			white-space: pre-line
 		&-tags
@@ -317,11 +343,11 @@ $btn-padding-x-xl: 6rem
 		&-tag
 			// border: 1px solid $light
 			// border-radius: .25rem
-			color: rgba($body-color, .5)
+			color: rgba($body-color, .3)
 			cursor: pointer
 			display: inline-block
 			font-size: .74rem
-			font-weight: 100
+			// font-weight: 100
 			margin-bottom: .5rem
 			margin-right: 1rem
 			// padding: 7px 15px
@@ -467,9 +493,10 @@ $btn-padding-x-xl: 6rem
 			&-item
 				border: 1px solid $light
 				border-radius: .35rem
+				color: $body-color
 				cursor: pointer
+				display: block
 				font-size: .75rem
-				font-weight: 100
 				margin-bottom: 1rem
 				padding: .5rem 1.5rem
 				transition: .5s
@@ -484,6 +511,7 @@ $btn-padding-x-xl: 6rem
 				&:hover
 					border-color: $primary
 					color: $primary
+					text-decoration: none
 
 .new
 	&-post
@@ -616,8 +644,21 @@ $btn-padding-x-xl: 6rem
 			opacity: .4
 			padding: 0 1rem
 
-// .modal
-	// &-backdrop
+.modal
+	&-content
+		border: none
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
+	&-header,
+	&-body,
+	&-footer
+		border: none
+		padding: 30px
+	&-footer
+		justify-content: center
+	&-backdrop
+		background: #fff
+		&.show
+			opacity: .9
 
 
 .dropzone
@@ -713,3 +754,7 @@ $btn-padding-x-xl: 6rem
 	@for $i from 0 through 10
 		&-#{$i}
 			opacity: $i/10
+
+.flex
+	&-full
+		flex: 0 0 100%

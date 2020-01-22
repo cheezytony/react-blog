@@ -1,6 +1,8 @@
 import React from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import ReactDOM from "react-dom";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 class formElement extends React.Component {
 
@@ -30,7 +32,9 @@ class formElement extends React.Component {
 		var parent = this._reactInternalFiber._debugOwner.stateNode;
 		var value;
 
-		if (event.target.matches('input[type="file"][multiple]')) {
+		if (this.constructor === Editor) {
+			value = this.state.instance.getData();
+		}else if (event.target.matches('input[type="file"][multiple]')) {
 			value = event.target.files;
 		}else if (event.target.matches('input[type="file"]')) {
 			value = event.target.files[0];
@@ -40,7 +44,7 @@ class formElement extends React.Component {
 			value = event.target.value;
 		}
 
-		if (event.target.matches('input[type="file"]')) {
+		if (event.target?.matches('input[type="file"]')) {
 			const files = [...event.target.files];
 			this.setState({
 				files: files
@@ -49,9 +53,9 @@ class formElement extends React.Component {
 			this.forceUpdate();
 		}
 
-	    parent.setState({
-	    	[model]: value
-	    });
+		parent.setState({
+			[model]: value
+		});
 	}
 
 	getSnapshotBeforeUpdate(prevProps) {
@@ -90,6 +94,28 @@ class Textarea extends formElement {
 class File extends formElement {
 	render() {
 		return <input type="file" { ...this.props } onChange={(event) => this.handleInputChange(event, this.state.model, this.state.state)} />;
+	}
+}
+
+class Editor extends formElement {
+
+	handleEditorChange(event, editor) {
+		const parent = this._reactInternalFiber._debugOwner.stateNode;
+		const value = editor.getData();
+
+		parent.setState({
+			[this.state.model]: value
+		});
+	}
+
+	render() {
+		return (
+			<CKEditor
+				{ ...this.props }
+				editor={ ClassicEditor }
+				onChange={ (event, editor) => this.handleEditorChange(event, editor)}
+				onInit={ instance => { this.setState({ instance }) } } />
+		);
 	}
 }
 
@@ -153,5 +179,6 @@ export {
 	Input,
 	Textarea,
 	File,
+	Editor,
 	Dropzone
 }

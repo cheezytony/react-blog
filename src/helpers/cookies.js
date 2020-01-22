@@ -1,3 +1,14 @@
+/*
+----------------------------------------------------------------------------------------------------
+| Javasscript Cookies Manager
+------------------------------
+| Author: Antonio Okoro
+| Licence: MIT
+---------------
+| Copyright 2016, cmp-cc
+----------------------------------------------------------------------------------------------------
+*/
+
 (() => {
 
 	function parseCookies() {
@@ -66,10 +77,16 @@
 
 		get(key) {
 			const cookies = parseCookies();
-			var data = decodeURIComponent(cookies.keys[key]);
+			var data = cookies.keys[key];
 
-			if (/^({|\[).+(}|])$/.test(data)) {
-				data = JSON.parse(data);
+			if (data) {
+
+				data = decodeURIComponent(data);
+
+				if (/^({|\[).+(}|])$/.test(data)) {
+					data = JSON.parse(data);
+				}
+
 			}
 
 			return data;

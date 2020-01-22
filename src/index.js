@@ -8,7 +8,7 @@ import "jquery";
 import "bootstrap";
 import "./helper.js";
 
-import './App.sass';
+import './assets/sass/App.sass';
 import store from './store';
 
 ReactDOM.render(

@@ -37,7 +37,7 @@ function Navbar(props) {
 		<nav className="navbar navbar-expand-md">
 			<div className="container navbar-container">
 
-				<Link to="/" className="navbar-brand">e blog</Link>
+				<Link to="/" className="navbar-brand">Eblog</Link>
 
 				<div className="navbar-collapse">
 					<ul className="nav navbar-nav ml-auto">

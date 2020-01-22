@@ -1,0 +1,33 @@
+$Poppins: (
+	(Thin, 100),
+	(ExtraLight, 200),
+	(Light, 300),
+	(Regular, 400),
+	(Medium, 500),
+	(SemiBold, 600),
+	// (Bold, 700),
+	// (ExtraBold, 800),
+	// (Black, 900)
+);
+
+@each $group in $Poppins {
+	@font-face {
+		font-family: Poppins;
+		font-weight: nth($group, 2);
+		src: url('../fonts/Poppins/Poppins-#{nth($group, 1)}.ttf');
+	}
+}
+
+// $Avenir: (
+// 	(Book, 200),
+// 	(Roman, 400),
+// 	(Black, 800),
+// );
+
+// @each $group in $Avenir {
+// 	@font-face {
+// 		font-family: Avenir;
+// 		font-weight: nth($group, 2);
+// 		src: url('../fonts/Avenir/AvenirLTStd-#{nth($group, 1)}.otf');
+// 	}
+// }

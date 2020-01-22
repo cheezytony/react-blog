@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import BlogItem from './Item';
-import { Input, Textarea, Dropzone } from '../../components/form';
+import { Input, Textarea, Dropzone, Editor } from '../../components/form';
 import axios from 'axios';
 
 class NewPost extends React.Component {
@@ -136,7 +136,9 @@ class NewPost extends React.Component {
 		formdata.append('body', this.state.body);
 		formdata.append('tags', JSON.stringify(this.state.tags));
 		formdata.append('user', this.state.user.id);
-		formdata.append('featuredImage', this.state.featuredImage);
+		if (this.state.featuredImage) {
+			formdata.append('featuredImage', this.state.featuredImage);
+		}
 
 		var data = formdata;
 
@@ -247,12 +249,11 @@ class NewPost extends React.Component {
 						<label htmlFor="post-body" className="form-label">
 							Now enter fulfilling content so people won't regret clicking on your post
 						</label>
-						<Textarea
-							className="form-control"
-							id="post-body"
+						
+						<Editor
 							model="body"
 							state={ this.state }
-							placeholder="Enter post content" />
+							config={ { placeholder:'Enter post content', contents_id: 'post-body' } } />
 					</div>
 
 					{ (() => {
